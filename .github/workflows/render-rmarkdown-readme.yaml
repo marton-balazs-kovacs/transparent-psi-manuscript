@@ -1,0 +1,40 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+on:
+  push:
+    paths:
+      - 'data_upload_latest.txt'
+
+name: render-rmarkdown-readme
+
+jobs:
+  render-rmarkdown-readme:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: r-lib/actions/setup-pandoc@v1
+
+      - uses: r-lib/actions/setup-r@v1
+      
+      - name: Install curl dependencies
+        run: |
+          sudo apt-get install libcurl4-openssl-dev
+          
+      - name: Install dependencies
+        run: |
+          Rscript -e 'install.packages("rmarkdown", "remotes")'
+          Rscript -e 'remotes::install_github("marton-balazs-kovacs/tppr")'
+
+      - name: Commit and push results
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add README.md
+          git add README_files/*
+          git commit -m 'Re-build README.Rmd' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"

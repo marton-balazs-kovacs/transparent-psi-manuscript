@@ -1,0 +1,82 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(tppr)
+```
+
+```{r, include = FALSE}
+# Prepare data for the analysis
+# Read raw data
+raw <- tppr::read_data(type = "live", source = "download")
+
+# Clean raw data
+processed <- tppr::clean_data(raw)
+
+# Check current checkpoint
+current_checkpoint <- tppr::tell_checkpoint(df = processed)
+
+# Calculate cumulative success
+cumulative <- tppr::cumulative_success(df = processed)
+cumulative_bayes <- tppr::cumulative_bayes_factor(df = cumulative)
+
+# Run robustness analysis
+total_n <- nrow(processed)
+success <- sum(as.logical(processed$sides_match), na.rm = T)
+  
+robustness_bayes <- tppr::robustness_bf_analysis(success = success, total_n = total_n)
+
+# Run exploratory analysis
+exploratory <- tppr::analysis_exploratory(df = processed)
+
+# Run descriptive analysis
+descriptive <- tppr::sample_descriptives_current(processed_data = processed)
+```
+
+# transparent-psi-results
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This repository contains the data collected for the [Transparent Psi Project](https://osf.io/jk2zf/). This README contains the results calculated from the currently available data. The document was last updated at `r Sys.Date()`.
+
+```{r, echo = FALSE, results = 'asis'}
+tppr::text_helper_warning(current_checkpoint$next_checkpoint)
+```
+
+# Summary of the results
+
+```{r, echo = FALSE, results = 'asis'}
+tppr::text_helper_current_general(descriptive, robustness_bayes)
+```
+
+# Main Confirmatory Analysis results
+
+```{r, echo = FALSE, warning = FALSE}
+tppr::plot_confirmatory(cumulative_bayes, animated = FALSE)
+```
+
+# Result of the Bayesian Parameter Estimation Robustness Analysis
+
+```{r, echo = FALSE}
+tppr::plot_robustness(posterior_density = robustness_bayes$posterior_density,
+                      hdi_mode = robustness_bayes$hdi_mode,
+                      hdi_l = robustness_bayes$hdi_l,
+                      hdi_u = robustness_bayes$hdi_u,
+                      include_nhst = FALSE)
+```
+
+# Histogram overlay of the expected and observed distribution of successful guess rate
+
+```{r, echo = FALSE}
+tppr::plot_exploratory(success_rates_theoretical_prop = exploratory$success_rates_theoretical_prop,
+                       success_rates_empirical_prop = exploratory$success_rates_empirical_prop,
+                       possible_success_rates = exploratory$possible_success_rates)
+```

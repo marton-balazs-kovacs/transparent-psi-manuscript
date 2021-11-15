@@ -1,0 +1,35 @@
+# Based on: https://stackoverflow.com/questions/58465057/trigger-a-github-action-when-another-repository-creates-a-new-release
+on:
+  schedule:
+    - cron:  '0 1 * * *'
+
+name: check-new-data
+
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: Fetch latest data commit
+        run: |
+          curl -sL "https://api.github.com/repos/kekecsz/transparent-psi-results/commits" | \
+          jq -r ".[0].commit.committer.date" > data_upload_latest.txt
+          
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
+        
+      - name: Commit latest date for data upload
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "save new data upload date"
+          git push
+  
