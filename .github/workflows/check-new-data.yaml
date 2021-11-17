@@ -6,15 +6,14 @@ on:
 name: check-new-data
 
 jobs:
-  get-version:
+  check-new-data:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          token: ${{ secrets.TPP_PAT }}
           
       - name: Fetch latest data commit
         run: |
