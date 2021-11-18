@@ -27,7 +27,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          Rscript -e 'install.packages("rmarkdown", "remotes")'
+          Rscript -e 'install.packages(c("rmarkdown", "remotes"))'
           Rscript -e 'remotes::install_github("marton-balazs-kovacs/tppr")'
 
       - name: Commit and push results
