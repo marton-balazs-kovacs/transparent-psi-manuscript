@@ -29,6 +29,9 @@ jobs:
         run: |
           Rscript -e 'install.packages(c("rmarkdown", "remotes"))'
           Rscript -e 'remotes::install_github("marton-balazs-kovacs/tppr")'
+          
+      - name: Render readme
+        run: Rscript -e 'rmarkdown::render("README.Rmd")'
 
       - name: Commit and push results
         run: |
