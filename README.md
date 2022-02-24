@@ -10,7 +10,7 @@
 This repository contains the data collected for the [Transparent Psi
 Project](https://osf.io/jk2zf/). This README contains the results
 calculated from the currently available data. The document was last
-updated at 2022-02-17.
+updated at 2022-02-24.
 
 Result not yet final\! Data presented on this page represent the current
 trend calculated from the data. The results should not be
