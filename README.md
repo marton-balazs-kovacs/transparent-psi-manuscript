@@ -10,7 +10,7 @@
 This repository contains the data collected for the [Transparent Psi
 Project](https://osf.io/jk2zf/). This README contains the results
 calculated from the currently available data. The document was last
-updated at 2022-04-07.
+updated at 2022-04-08.
 
 Result not yet final\! Data presented on this page represent the current
 trend calculated from the data. The results should not be
@@ -21,11 +21,11 @@ reaching 37836 trials.
 
 # Summary of the results
 
-The study currently has 37023 erotic trials gathered from a total of
-2070 participants. There has been 28 incomplete study sessions so far
-resulting in a total of 237 (0.64%) missing data points due to
-incomplete sessions. We observed a total of 49.85% successful guesses
-within 37023 erotic trials (posterior mode = 49.98%, posterior 90% HDI =
+The study currently has 37193 erotic trials gathered from a total of
+2081 participants. There has been 33 incomplete study sessions so far
+resulting in a total of 265 (0.71%) missing data points due to
+incomplete sessions. We observed a total of 49.86% successful guesses
+within 37193 erotic trials (posterior mode = 49.99%, posterior 90% HDI =
 49.56%, 50.39%).
 
 # Main Confirmatory Analysis results
